@@ -40,6 +40,10 @@ public class PlayerController : NetworkBehaviour {
 	void Update(){
 		if (!isLocalPlayer) {return;}
 
+		if (Input.GetMouseButton (0)) {
+			m_pShoot.Shoot ();
+		}
+
 		Vector3 inputDirection = GetInput ();
 		if (inputDirection.sqrMagnitude > 0.25f) {
 			m_pMotor.RotateChassis (inputDirection);

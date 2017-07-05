@@ -31,18 +31,25 @@ public class PlayerShoot : NetworkBehaviour {
 			return;
 		}
 
+		CmdShoot ();
+
+		m_shotsLeft--;
+		if (m_shotsLeft <= 0) {
+			StartCoroutine ("Reload");
+		}
+	}
+
+	[Command]
+	void CmdShoot(){
 		Bullet bullet = null;
 		bullet = m_bulletPrefab.GetComponent<Bullet> ();
 
 		Rigidbody rbody = Instantiate (m_bulletPrefab, m_bulletSpawn.position, m_bulletSpawn.rotation) as Rigidbody;
 		if (rbody != null) {
 			rbody.velocity = bullet.m_speed * m_bulletSpawn.transform.forward;
+			NetworkServer.Spawn (rbody.gameObject);
 		}
 
-		m_shotsLeft--;
-		if (m_shotsLeft <= 0) {
-			StartCoroutine ("Reload");
-		}
 	}
 
 	IEnumerator Reload(){

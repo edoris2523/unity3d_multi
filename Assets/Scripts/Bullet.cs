@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class Bullet : MonoBehaviour {
+public class Bullet : NetworkBehaviour {
 
 	Rigidbody m_rigidbody;
 	Collider m_collider;
@@ -36,9 +36,6 @@ public class Bullet : MonoBehaviour {
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.Sleep ();
 
-		foreach (MeshRenderer m in GetComponentsInChildren<MeshRenderer>()) {
-			m.enabled = false;
-		}
 		foreach (ParticleSystem ps in m_allParticles) {
 			ps.Stop ();
 		}
@@ -48,7 +45,12 @@ public class Bullet : MonoBehaviour {
 			m_explosionFX.Play ();
 		}
 
-		Destroy (gameObject);
+		if (isServer) {
+			Destroy (gameObject);
+			foreach (MeshRenderer m in GetComponentsInChildren<MeshRenderer>()) {
+				m.enabled = false;
+			}
+		}
 	}
 	// Update is called once per frame
 	void Update () {
