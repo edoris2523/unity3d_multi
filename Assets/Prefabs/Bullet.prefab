@@ -58,7 +58,6 @@ GameObject:
   - component: {fileID: 4449622072926344}
   - component: {fileID: 33900708634164186}
   - component: {fileID: 23297581391208144}
-  - component: {fileID: 65587939230163830}
   m_Layer: 0
   m_Name: BulletMesh
   m_TagString: Untagged
@@ -328,18 +327,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0.25}
---- !u!65 &65587939230163830
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1534896706303734}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25, z: 0.6}
-  m_Center: {x: 0, y: 0, z: 0.25}
 --- !u!114 &114650001360234356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -406,10 +393,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 20
   m_bounces: 5
+  m_damage: 1
   m_lifetime: 5
   m_explosionFX: {fileID: 198405456904370528}
   m_bounceTags:
   - Bounce
+  m_collisionTags:
+  - Player
 --- !u!198 &198078232420294748
 ParticleSystem:
   m_ObjectHideFlags: 1

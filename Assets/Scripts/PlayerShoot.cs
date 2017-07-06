@@ -23,7 +23,6 @@ public class PlayerShoot : NetworkBehaviour {
 		if (m_isReloading || m_bulletPrefab == null) {
 			return;
 		}
-		Debug.Log ("Shoot1");
 		CmdShoot ();
 
 		m_shotsLeft--;

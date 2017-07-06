@@ -14,9 +14,11 @@ public class Bullet : NetworkBehaviour {
 
 	public int m_speed = 100;
 	public int m_bounces = 5;
+	public float m_damage = 1f;
 	public float m_lifetime = 5f;
 	public ParticleSystem m_explosionFX;
 	public List<string> m_bounceTags;
+	public List<string> m_collisionTags;
 
 	// Use this for initialization
 	void Start () {
@@ -52,10 +54,6 @@ public class Bullet : NetworkBehaviour {
 			}
 		}
 	}
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	void OnCollisionExit(Collision collision){
 		if(m_rigidbody.velocity != Vector3.zero){
@@ -64,11 +62,24 @@ public class Bullet : NetworkBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
+		CheckCollisions (collision);
 		if (m_bounceTags.Contains (collision.gameObject.tag)) {
 			if (m_bounces <= 0) {
 				Explode ();
 			}
 			m_bounces--;
+		}
+	}
+
+	void CheckCollisions(Collision collision){
+		if (m_collisionTags.Contains (collision.collider.tag)) {
+			Debug.Log ("Hit");
+			Explode ();
+			PlayerHealth playerHealth = collision.gameObject.GetComponentInParent<PlayerHealth> ();
+
+			if (playerHealth != null) {
+				playerHealth.Damage (m_damage);
+			}
 		}
 	}
 }

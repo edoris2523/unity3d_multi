@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class PlayerMotor : NetworkBehaviour {
 
 	// Player의 Rigidbody
-	Rigidbody m_rigidbody;
+	public Rigidbody m_rigidbody;
 
 	// Chassis, Turret의 Transform을 inspector에서 불러오기 위해 만듬
 	public Transform m_chassis;

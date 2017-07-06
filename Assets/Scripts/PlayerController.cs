@@ -15,12 +15,19 @@ public class PlayerController : NetworkBehaviour {
 	PlayerSetup m_pSetup;
 	PlayerShoot m_pShoot;
 
+	Vector3 m_originPosition;
+
 	// Use this for initialization
 	void Start () {
 		m_pHealth = GetComponent<PlayerHealth> ();
 		m_pMotor = GetComponent<PlayerMotor> ();
 		m_pSetup = GetComponent<PlayerSetup> ();
 		m_pShoot = GetComponent<PlayerShoot> ();
+	}
+
+	public override void OnStartLocalPlayer(){
+		m_originPosition = transform.position;
+		Debug.Log ("Original Position : " + transform.position.ToString());
 	}
 
 	Vector3 GetInput(){
@@ -31,7 +38,7 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	void FixedUpdate(){
-		if (!isLocalPlayer) {return;}
+		if (!isLocalPlayer || m_pHealth.m_isDead) {return;}
 
 		Vector3 inputDirection = GetInput ();
 		m_pMotor.MovePlayer (inputDirection);
@@ -41,7 +48,6 @@ public class PlayerController : NetworkBehaviour {
 		if (!isLocalPlayer) {return;}
 
 		if (Input.GetMouseButtonDown (0)) {
-			Debug.Log ("Shoot");
 			m_pShoot.Shoot ();
 		}
 
@@ -51,5 +57,17 @@ public class PlayerController : NetworkBehaviour {
 		}
 		Vector3 turretDir = Utillity.GetWorldPointFromScreenPoint (Input.mousePosition, m_pMotor.m_turret.position.y) - m_pMotor.m_turret.position;
 		m_pMotor.RotateTurret (turretDir);
+	}
+
+	void Disable(){
+		Debug.Log ("DOOMED");
+		StartCoroutine ("RespawnRountine");
+	}
+
+	IEnumerator RespawnRoutine(){
+		transform.position = Vector3.zero;
+		m_pMotor.m_rigidbody.velocity = Vector3.zero;
+		yield return new WaitForSeconds (3f);
+		m_pHealth.Reset ();
 	}
 }
