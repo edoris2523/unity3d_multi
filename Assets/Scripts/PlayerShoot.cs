@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -18,19 +18,12 @@ public class PlayerShoot : NetworkBehaviour {
 		m_shotsLeft = m_shotsPerBurst;
 		m_isReloading = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			Shoot ();
-		}
-	}
 
 	public void Shoot(){
 		if (m_isReloading || m_bulletPrefab == null) {
 			return;
 		}
-
+		Debug.Log ("Shoot1");
 		CmdShoot ();
 
 		m_shotsLeft--;
@@ -41,6 +34,7 @@ public class PlayerShoot : NetworkBehaviour {
 
 	[Command]
 	void CmdShoot(){
+		
 		Bullet bullet = null;
 		bullet = m_bulletPrefab.GetComponent<Bullet> ();
 

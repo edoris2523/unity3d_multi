@@ -40,7 +40,8 @@ public class PlayerController : NetworkBehaviour {
 	void Update(){
 		if (!isLocalPlayer) {return;}
 
-		if (Input.GetMouseButton (0)) {
+		if (Input.GetMouseButtonDown (0)) {
+			Debug.Log ("Shoot");
 			m_pShoot.Shoot ();
 		}
 
