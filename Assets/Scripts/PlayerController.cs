@@ -12,13 +12,15 @@ public class PlayerController : NetworkBehaviour {
 
 	PlayerHealth m_pHealth;
 	PlayerMotor m_pMotor;
-	PlayerSetup m_pSetup;
+	public PlayerSetup m_pSetup;
 	PlayerShoot m_pShoot;
 
 	Vector3 m_originPosition;
 	NetworkStartPosition[] m_spawnPoints;
 
 	public GameObject m_spawnFx;
+	public int m_score;
+
 	// Use this for initialization
 	void Start () {
 		m_pHealth = GetComponent<PlayerHealth> ();

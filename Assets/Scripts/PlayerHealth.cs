@@ -9,12 +9,11 @@ public class PlayerHealth : NetworkBehaviour {
 	[SyncVar(hook="UpdateHealthBar")]
 	float m_currentHealth;
 
-	public float m_maxHealth = 3;
-
-	public GameObject m_deathPrefab;
 	public bool m_isDead = false;
-
+	public float m_maxHealth = 3;
+	public GameObject m_deathPrefab;
 	public RectTransform m_healthBar;
+	public PlayerController m_lastAttacker;
 
 	// Use this for initialization
 	void Start () {
@@ -39,12 +38,21 @@ public class PlayerHealth : NetworkBehaviour {
 		}
 	}
 
-	public void Damage(float damage){
+	public void Damage(float damage, PlayerController pc = null){
 		if (!isServer) {return;}
 
-		m_currentHealth -= damage;
+		if (pc != null && pc != this.GetComponent<PlayerController>()) {
+			m_lastAttacker = pc;
+		}
 
+		m_currentHealth -= damage;
 		if (m_currentHealth <= 0 && !m_isDead) {
+			if (m_lastAttacker != null) {
+				m_lastAttacker.m_score++;
+				m_lastAttacker = null;
+			}
+
+			GameManager.Instance.UpdateScoreboard ();
 			m_isDead = true;
 			RpcDie ();
 		}

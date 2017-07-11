@@ -17,6 +17,7 @@ public class Bullet : NetworkBehaviour {
 	public float m_damage = 1f;
 	public float m_lifetime = 5f;
 	public ParticleSystem m_explosionFX;
+	public PlayerController m_owner;
 	public List<string> m_bounceTags;
 	public List<string> m_collisionTags;
 
@@ -78,7 +79,7 @@ public class Bullet : NetworkBehaviour {
 			PlayerHealth playerHealth = collision.gameObject.GetComponentInParent<PlayerHealth> ();
 
 			if (playerHealth != null) {
-				playerHealth.Damage (m_damage);
+				playerHealth.Damage (m_damage, m_owner);
 			}
 		}
 	}
